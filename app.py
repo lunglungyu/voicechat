@@ -13,6 +13,8 @@ import plivo
 import config
 from utils import get_redis_connection, get_plivo_connection, tinyid
 
+trolln_message = "Are you ready to troll?"
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -41,7 +43,8 @@ def conf_music():
     """
 
     plivo_response = plivo.XML.Response()
-    plivo_response.addSpeak(config.CONFERENCE_WAIT_ANNOUNCEMENT)
+    plivo_response.addSpeak(trolln_message)
+    #plivo_response.addSpeak(config.CONFERENCE_WAIT_ANNOUNCEMENT)
     plivo_response.addPlay(config.HOLD_MUSIC, loop=1)
     response = make_response(render_template('response_template.xml', response=plivo_response))
     response.headers['content-type'] = 'text/xml'
@@ -70,7 +73,8 @@ def conf(conference_name):
         return response
 
     plivo_response.addWait(length=2)
-    plivo_response.addSpeak(config.CONFERENCE_ANNOUNCEMENT)
+    #plivo_response.addSpeak(config.CONFERENCE_ANNOUNCEMENT)
+    plivo_response.addSpeak(trolln_message)
     wait_sound_url = url_for('conf_music', _external=True)
 
     plivo_response.addConference(conference_name,
